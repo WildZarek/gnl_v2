@@ -6,7 +6,7 @@
 /*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:35:29 by dsarmien          #+#    #+#             */
-/*   Updated: 2024/11/28 21:01:45 by dsarmien         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:47:15 by dsarmien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (free(buffer), NULL);
 	buffer[BUFFER_SIZE] = '\0';
-	read(fd, buffer, BUFFER_SIZE);
 	line = read_buffer(fd, buffer);
-	printf("Pointer: %p\nContent: %s\n", line, line);
+	printf("Pointer: %p ('%s')\n", line, line);
 	return(line);
 }
 
