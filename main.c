@@ -18,14 +18,14 @@ int main(void)
 		text = get_next_line(fd);
 		printf("GNL Result: %s\n", text);
 		printf("\n");
-		// read 2
+/* 		// read 2
 		text = get_next_line(fd);
 		printf("GNL Result: %s\n", text);
-		printf("\n");
-		// read 3
+		printf("\n"); */
+/* 		// read 3
 		text = get_next_line(fd);
 		printf("GNL Result: %s\n", text);
-		printf("\n");
+		printf("\n"); */
 	}
 	return (0);
 }
