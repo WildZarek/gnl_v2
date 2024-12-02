@@ -1,32 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/30 21:32:10 by dsarmien          #+#    #+#             */
+/*   Updated: 2024/11/30 22:05:22 by dsarmien         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include <fcntl.h>
 
 int main(void)
 {
-	char	*text = NULL;
 	int		fd;
+	char	*line;
 
 	fd = open("tester", O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error reading!");
+		printf("Error reading!̣\n");
 		return (1);
 	}
 	else
 	{
-		// read 1
-		text = get_next_line(fd);
-		printf("GNL Result: %s\n", text);
-		printf("\n");
-/* 		// read 2
-		text = get_next_line(fd);
-		printf("GNL Result: %s\n", text);
-		printf("\n"); */
-/* 		// read 3
-		text = get_next_line(fd);
-		printf("GNL Result: %s\n", text);
-		printf("\n"); */
+		while ((line = get_next_line(fd)) != NULL)
+		{
+			printf("%s", line);
+			free(line);
+		}
 	}
+	close(fd);
 	return (0);
 }
-

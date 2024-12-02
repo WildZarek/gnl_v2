@@ -6,7 +6,7 @@
 /*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:32:51 by dsarmien          #+#    #+#             */
-/*   Updated: 2024/11/28 20:58:17 by dsarmien         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:36:23 by dsarmien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 /**
- * @brief Duplicates a string.
- * @param s The string to be duplicated.
- * @return Pointer to the duplicated string.
+ * @brief Free allocated memory and set it to NULL.
+ * @param ptr The pointer to be freed.
+ * @return Pointer to the string.
  */
-char	*ft_strdup(const char *s);
+char	*ft_memclean(char *ptr);
 
 #endif

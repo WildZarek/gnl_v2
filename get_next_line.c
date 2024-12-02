@@ -5,75 +5,88 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 17:35:29 by dsarmien          #+#    #+#             */
-/*   Updated: 2024/11/30 18:55:52 by dsarmien         ###   ########.fr       */
+/*   Created: 2024/11/30 20:29:32 by dsarmien          #+#    #+#             */
+/*   Updated: 2024/12/02 18:36:27 by dsarmien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char*	read_buffer(int fd, char *buffer);
+char	*ft_read_fd(int fd, char *buffer)
+{
+	char	*ptr;
+	char	*data;
+	ssize_t	bytes;
+
+	bytes = 1;
+	ptr = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!ptr)
+		return (NULL);
+	while ((!buffer) || (!ft_strchr(buffer, '\n') && bytes > 0))
+	{
+		bytes = read(fd, ptr, BUFFER_SIZE);
+		if (bytes == -1)
+			return (ft_memclean(ptr));
+		ptr[bytes] = '\0'; // we need this?
+		data = buffer;
+		buffer = ft_strjoin(buffer, ptr);
+		free(data);
+		ft_memclean(ptr);
+	}
+	// free(ptr);
+	return (buffer);
+}
+
+char	*ft_get_line(char *str)
+{
+	char	*next_line;
+	char	*n_pos;
+	char	*aux;
+	size_t	i;
+
+	if (!*str)
+		return (NULL);
+	n_pos = ft_strchr(str, '\n');
+	if (n_pos)
+		i = n_pos - str + 1;
+	else
+		i = ft_strlen(str);
+	next_line = malloc((i + 1) * sizeof(char));
+	if (!next_line)
+		return (NULL);
+	ft_memcpy(next_line, str, i);
+	next_line[i] = '\0';
+	aux = str;
+	str = n_pos;
+	ft_memclean(aux);
+ 	return (next_line);
+}
 
 char	*get_next_line(int fd)
 {
-	char	*line;
 	static char	*buffer;
-	
-	line = NULL;
-	if (BUFFER_SIZE <= 0 || fd < 0 || fd > MAX_FD)
+	char		*tmp_buffer;
+	char		*line;
+
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
-	
-/* 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char)) //-- memory leak; */
 	if (!buffer)
 	{
-		buffer = ft_strdup("");
-		//return (free(buffer), NULL);
+		buffer = malloc(1 * sizeof(char));
+		if (!buffer)
+			return(free(buffer), NULL);
+		buffer[0] = '\0';//??????
 	}
-	//buffer[BUFFER_SIZE] = '\0';
-	// read(fd, buffer, BUFFER_SIZE) -- double read detected!;
-	//line = read_buffer(fd, buffer);
-	line = get_one_line(buffer);
-	//free(buffer) -- should do this?;
+	buffer = ft_read_fd(fd, buffer);
+	//printf("Buffer Pointer: %p -> %s\n", buffer, buffer);
+	tmp_buffer = buffer; // forgot to free
+	line = ft_get_line(buffer);
 	//printf("Line Pointer: %p -> %s\n", line, line);
-	buffer = NULL;
-	return(line);
-}
-
-char	*read_buffer(int fd, char *buffer)
-{
-		char	*aux_ptr;
-		char	*read_data;
-		ssize_t	bytes_read;
-		size_t	count;
-
-		bytes_read = 1;
-		count = 0;
-		while (!(ft_strchr(read_data, '\n')) && bytes_read > 0)
-		{
-			read_data = malloc((BUFFER_SIZE + 1) * sizeof(char));
-			if (!read_data) 
-				return(NULL);
-			
-			bytes_read = read(fd, read_data, BUFFER_SIZE);
-			printf("\nBytes read: %lu | Iteration (read): %zu\n", bytes_read, count + 1);
-			printf("Static Buffer (before initialize): %s\n", buffer);
-
-			aux_ptr = buffer;
-			// printf("Old memaddr: %p\n", buffer);
-			if (bytes_read != 0)
-			{
-				buffer = ft_strjoin(buffer, read_data);
-			}
-			else
-				break;
-			// printf("New memaddr: %p\n", buffer);
-			// printf("Ptr memaddr: %p\n", aux_ptr);
-
-			printf("Static Buffer (after initialize): %s\n", buffer);
-			free(read_data);
-			read_data = NULL;
-			free(aux_ptr);
-			count++;
-		}
-		return(buffer);
+	/*
+		WORKING HERE / ToDo
+		
+		-> We need to update the buffer
+	*/
+	ft_update_buffer(line);
+	return (line);
 }

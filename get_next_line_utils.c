@@ -5,12 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:33:02 by dsarmien          #+#    #+#             */
-/*   Updated: 2024/11/25 18:15:15 by dsarmien         ###   ########.fr       */
+/*   Created: 2024/11/30 20:26:10 by dsarmien          #+#    #+#             */
+/*   Updated: 2024/11/30 21:28:07 by dsarmien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_memclean(char *ptr)
+
+{
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+	return (ptr);
+}
 
 size_t	ft_strlen(const char *s)
 {
@@ -48,7 +59,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
-
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*new;
@@ -67,17 +77,4 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	ft_memcpy(new, s1, s1_len);
 	ft_memcpy(new + s1_len, s2, s2_len);
 	return (new);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*dup;
-	size_t	s_len;
-
-	s_len = ft_strlen(s);
-	dup = malloc(s_len + 1);
-	if (!dup)
-		return (NULL);
-	ft_memcpy(dup, s, s_len + 1);
-	return (dup);
 }
