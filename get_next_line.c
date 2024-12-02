@@ -6,7 +6,7 @@
 /*   By: dsarmien <dsarmien@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 20:29:32 by dsarmien          #+#    #+#             */
-/*   Updated: 2024/12/02 18:36:27 by dsarmien         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:24:14 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_get_line(char *str)
 	char	*next_line;
 	char	*n_pos;
 	char	*aux;
+	char	*buffer_update;
 	size_t	i;
 
 	if (!*str)
@@ -57,7 +58,9 @@ char	*ft_get_line(char *str)
 	ft_memcpy(next_line, str, i);
 	next_line[i] = '\0';
 	aux = str;
-	str = n_pos;
+	buffer_update = malloc(((ft_strlen(str) - i) + 1) * sizeof(char));
+	ft_memcpy(buffer_update, n_pos, ((ft_strlen(str)-i)));
+	str = buffer_update;
 	ft_memclean(aux);
  	return (next_line);
 }
@@ -65,7 +68,7 @@ char	*ft_get_line(char *str)
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	char		*tmp_buffer;
+//	char		*tmp_buffer;
 	char		*line;
 
 	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0)
@@ -79,7 +82,7 @@ char	*get_next_line(int fd)
 	}
 	buffer = ft_read_fd(fd, buffer);
 	//printf("Buffer Pointer: %p -> %s\n", buffer, buffer);
-	tmp_buffer = buffer; // forgot to free
+	//tmp_buffer = buffer; // forgot to free
 	line = ft_get_line(buffer);
 	//printf("Line Pointer: %p -> %s\n", line, line);
 	/*
@@ -87,6 +90,6 @@ char	*get_next_line(int fd)
 		
 		-> We need to update the buffer
 	*/
-	ft_update_buffer(line);
+//	ft_update_buffer(line);
 	return (line);
 }
